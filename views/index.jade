@@ -86,7 +86,7 @@ block content
           h5.modal-title Log in
           button.close(type='button' data-dismiss='modal' aria-label='Close')
             span &times;
-        form(action="/logIn" method="post")
+        form(action="/logIn" method="post" id='logInForm')
           div.modal-body
             .form-group
               label.col-form-label(for='userMail') E-mail
