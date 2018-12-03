@@ -25,8 +25,6 @@ AmCharts.ready(function() {
           temp[i].value = temp[i].value*3;
       }
 
-      console.log(temp);
-
       var dataProvider ={
           mapVar: AmCharts.maps.mexicoHigh,
           areas: temp

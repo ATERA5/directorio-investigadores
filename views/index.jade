@@ -2,7 +2,7 @@ import mixins
 extends layout
 
 block append head
-  link(rel="stylesheet" href="stylesheets/ammap.css" type="text/css")
+  link(type="text/css" href="stylesheets/ammap.css" rel="stylesheet")
   script(src="js/ammap.js" type="text/javascript")
   script(src="js/mexicoHigh.js" type="text/javascript")
 
@@ -10,6 +10,8 @@ block append head
 
 block content
   .container
+    
+
     .map
 
       script(src="js/drawMap.js")

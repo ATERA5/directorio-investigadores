@@ -10,4 +10,6 @@ router.get('/salir',authRouter.logOut);
 router.get('/registro', authRouter.signUpIndex);
 router.post('/registro', authRouter.signUp);
 
+router.get('/confirmacion/:ficha', authRouter.confirmation);
+
 module.exports = router;

@@ -1,4 +1,5 @@
 'use strict';
+const randomstring = require("randomstring");
 var faker = require('faker');
 faker.locale = "es_MX";
 
@@ -11,6 +12,7 @@ module.exports = {
               last_names: faker.name.lastName() + " " + faker.name.lastName(),
               email: faker.internet.email(),
               password: faker.internet.password(),
+              token: randomstring.generate(25),
               createdAt: new Date(),
               updatedAt: new Date(),
           };
@@ -21,4 +23,4 @@ module.exports = {
   down: (queryInterface, Sequelize) => {
       return queryInterface.bulkDelete('User', null, {});
   }
-}; 
+};
