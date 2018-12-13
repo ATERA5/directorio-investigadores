@@ -1,0 +1,39 @@
+extends layout
+
+block content
+    div.container-fluid
+        div.row
+            div.col-3
+                div.card
+                    div.card-body
+                        h1.card-title #{user.names}
+                        h4.card-subtitle.text-muted #{user.last_names}
+                        - if (role == 'Student')
+                            p.font-italic Estudiante
+                        - else if (role == 'Researcher')
+                            p.font-italic Investigador
+                    div
+                div
+            div
+            div.col-9
+                div.card
+                    div.card-body
+                        h1 Trabajos
+                    div
+                div
+            div
+        div
+        br
+        div.row
+            div.col-3
+                div.card
+                    div.card-body
+                        h1.card-title Contacto
+
+                        h3 Correo electrónico:
+                        a(href='mailto:#{user.email}').font-italic #{user.email}
+                    div
+                div
+            div
+        div
+    div

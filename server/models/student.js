@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     academic_degree: DataTypes.STRING,
     user_id: {
         type: DataTypes.INTEGER,
-        references: 'country',
+        references: 'user',
         referencesKey: 'id'
     },
   }, {
