@@ -1,10 +1,13 @@
 var db = require("../models/index");
 const User = require('../models/user')(db.sequelize, db.Sequelize);
+const Researcher = require('../models/researcher')(db.sequelize, db.Sequelize);
+const Student = require('../models/student')(db.sequelize, db.Sequelize);
 var bcrypt = require('bcrypt-node');
 const sgMail = require('@sendgrid/mail');
 const fs = require('fs');
 const path = require('path');
 const randomstring = require("randomstring");
+const { Error, validate } = require('./validationHelpers.js');
 
 module.exports = {
     logInIndex(req, res) {
@@ -14,26 +17,29 @@ module.exports = {
             res.render('login');
     },
     logIn(req, res) {
-        User.findOne({
-            where: {
-                email: req.body.email,
-            },
-        })
-        .then((user) => {
-            if (user === null || !bcrypt.compareSync(req.body.password, user.password))
-                res.render('login', {
-                    error: 'El correo electrónico o la contraseña son incorrectos'
-                });
-            else if (user.approved == false) {
-                res.render('login', {
-                    error: 'La cuenta no ha sido confirmada, verifica tu bandeja de'
-                        + ' correo electrónico'
-                });
-            }
-            else
-                req.login(user, function(err) {
-                    res.redirect('/');
-                });
+        validate(req, res, 'login').then(() => {
+            User.findOne({
+                where: {
+                    email: req.body.email,
+                },
+            })
+            .then((user) => {
+                if (user === null || !bcrypt.compareSync(req.body.password, user.password))
+                    res.render('login', {
+                        errors: Error('body', 'password', req.body.password,
+                                'El correo electrónico o la contraseña son incorrectos'),
+                    });
+                else if (user.approved == false) {
+                    res.render('login', {
+                        errors: Error('', '', '', 'La cuenta no ha sido confirmada, '
+                                + 'verifica tu bandeja de correo electrónico' ),
+                    });
+                }
+                else
+                    req.login(user, function(err) {
+                        res.redirect('/');
+                    });
+            });
         });
     },
     signUpIndex(req, res) {
@@ -42,25 +48,8 @@ module.exports = {
         else
             res.render('signup');
     },
-    signUp(req, res) {
-        User.findOne({
-            where: {
-                email: req.body.email,
-            }
-        })
-        .then((existingUser) => {
-            if (existingUser) {
-                return res.render('signup', {
-                    error: 'El correo electrónico ya ha sido registrado'
-                });
-            }
-            else if (req.body.password != req.body.passwordMatch) {
-                return res.render('signup', {
-                    error: 'Las contraseñas no coinciden'
-                });
-            }
-        })
-        .then(() => {
+    signUp(req, res, next) {
+        validate(req, res, 'signup').then(() => {
             User.create({
                 names: req.body.names,
                 last_names: req.body.last_names,
@@ -72,8 +61,8 @@ module.exports = {
             })
             .then((user) => {
                 let confirmation_link = "http://" + process.env.HOST + ":"
-                                        + process.env.PORT + "/"
-                                        + "confirmacion/" + user.token;
+                + process.env.PORT + "/"
+                + "confirmacion/" + user.token;
                 var emailHTML = path.join(__dirname, "..", "..", "views/email/", "confirm.html");
                 emailHTML = fs.readFileSync(emailHTML).toString();
                 emailHTML = emailHTML.replace(/{{user.names}}/gm, user.names);
@@ -85,18 +74,32 @@ module.exports = {
                     from: process.env.support_email,
                     subject: user.names + ', activa tu cuenta',
                     html: emailHTML,
+                })
+                .then(() => {
+                    if (req.body.accountType == "student") {
+                        Student.create({
+                            user_id: user.id,
+                            createdAt: new Date(),
+                            updatedAt: new Date(),
+                        });
+                    }
+                    else if (req.body.accountType == "researcher") {
+                        Researcher.create({
+                            user_id: user.id,
+                            createdAt: new Date(),
+                            updatedAt: new Date(),
+                        });
+                    }
+                    res.render('login');
                 });
-                res.render('login');
             })
             .catch(error => res.status(400).send(error));
         });
     },
     logOut(req, res){
-
         req.logout();
         req.session.destroy();
         res.redirect('/');
-
     },
     confirmation(req, res) {
         User.findOne({

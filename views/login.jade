@@ -1,10 +1,11 @@
 extends layout
 
 block content
-    if error
+    if errors
         .container
             .alert.alert-danger
-                span #{error}
+                for error in errors
+                  p #{error.msg}
 
     .container
         h5 Log in

@@ -14,7 +14,7 @@ html
     link(rel='icon', href='/images/icon.png')
   body
     block header
-  
+
     nav.navbar.navbar-expand-lg.navbar-light.bg-light.fixed-top.text-nowrap
       .container
         a.navbar-brand(href='#')
@@ -23,21 +23,19 @@ html
           span.navbar-toggler-icon
         .collapse.navbar-collapse(id='navbarNav')
           ul.navbar-nav.mr-auto
-            li.nav-item.mx-1
+            li.nav-item
               a.nav-link(href='/')
                 strong Inicio
-            li.nav-item
-              from.form-inline(role='search')
-                .input-group
-                  .input-group-prepend
-                    select.form-control
-                      option(value='1') Todos
-                      option(value='2') Investigador
-                      option(value='3') Estado
-                      option(value='4') Institución
-                  input.form-control(type="text" placeholder='Busqueda rápida')
-                  .input-group-append
-                    button.btn.btn-secondary(type='submit') Buscar
+            form.form-inline(role='search' id='quick_search_form')
+              .input-group
+                .input-group-prepend
+                  select.form-control(id='quick_search_type')
+                    option(value='1') Todos
+                    option(value='2') Personas
+                    option(value='3') Institución
+                input.form-control(required='required' type="text" placeholder='Busqueda rápida' id='quick_search_input' name='quick_search_input')
+                .input-group-append
+                  button.btn.btn-secondary(type='submit' id='quick_search_button') Buscar
            ul.navbar-nav
             if !isAuthenticated
               li.nav-item-mx-1
@@ -48,8 +46,9 @@ html
                 a.nav-link(href='/registro')
                   strong Registrarse
             if isAuthenticated
+              -var sanitizedName = reqUser.names.replace(/\W/g, '')
               li.nav-item.mx-1
-                a.nav-link(href='/perfil')
+                a.nav-link(href='/perfil/usuario/#{reqUser.id}/#{sanitizedName}')
                   strong Perfil
             if isAuthenticated
               li.nav-item.mx-1
@@ -61,8 +60,8 @@ html
 
     block scripts
       script(src='/jquery/jquery.min.js')
-      script(src='/bootstrap/js/bootstrap.min.js')
       script(src='/popper/popper.min.js')
+      script(src='/bootstrap/js/bootstrap.min.js')
       script(src='/js/jquery.min.js')
       script(src='/js/index.js')
       script(src='/js/jquery.easing.1.3.js')
@@ -70,3 +69,20 @@ html
       script(src='/js/jquery.stellar.min.js')
       script(src='/js/jquery.easypiechart.min.js')
       script(src='/js/main.js')
+      script(type='text/javascript').
+       $(document).ready(function(){
+         $("#quick_search_form").submit(function(event) {
+            var type = $("#quick_search_type").val();
+            var search_title = encodeURIComponent($("#quick_search_input").val());
+            $("#quick_search_button").attr("disabled", true);
+            if (jQuery.trim(search_title) == "")
+              return;
+            if (type == 1)
+              location.href = "/busqueda/busquedarapida/"+search_title;
+            if (type == 2)
+              location.href = "/busqueda/personas/"+search_title;
+            if (type == 3)
+              location.href = "/busqueda/institucion/"+search_title;
+            event.preventDefault();
+          });
+       });

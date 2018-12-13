@@ -7,9 +7,7 @@ var User = require('../models/user')(db.sequelize,db.Sequelize);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('index',{
-        authenticated: req.isAuthenticated()
-    });
+    res.render('index');
 });
 
 passport.serializeUser(function(user, done) {

@@ -5,10 +5,13 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
 var passport = require('passport');
+var expressValidator = require('express-validator')
+var bodyParser = require('body-parser')
 require('dotenv').load();
 
 var indexRouter = require('./server/routes/index');
-var authRouter = require('./server/routes/auth')
+var authRouter = require('./server/routes/auth');
+var searchRouter = require('./server/routes/search');
 var profileRouter = require('./server/routes/profile');
 var usersRouter = require('./server/routes/users');
 var campusRouter = require('./server/routes/campus');
@@ -42,10 +45,16 @@ app.use(passport.session());
 
 app.use(function(req,res,next){
   res.locals.isAuthenticated = req.isAuthenticated();
+  res.locals.reqUser = req.user;
   next();
 });
+
+app.use(bodyParser.json());
+app.use(expressValidator());
+
 app.use('/', indexRouter);
 app.use('/', authRouter);
+app.use('/busqueda', searchRouter);
 app.use('/perfil', profileRouter);
 app.use('/usuarios', usersRouter);
 app.use('/campus', campusRouter);

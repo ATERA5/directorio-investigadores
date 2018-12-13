@@ -1,6 +1,12 @@
 extends layout
 
 block content
+    if errors
+        .container
+            .alert.alert-danger
+                for error in errors
+                  p #{error.msg}
+
     .container
         h5 Registrarse
         form(action="/registro" method="post" id='signUpForm')
@@ -20,5 +26,16 @@ block content
             .form-group
                 label.col-form-label(for='passwordMatch') Confirmar contraseña
                 input.form-control(type='password' id='passwordMatch' name='passwordMatch')
+            .form-group
+                label.col-form-label(for='accountType') Tipo de cuenta
+                br
+                label.radio-inline
+                    input(type='radio', value='student', name='accountType')
+                    span Estudiante
+                br
+                label.radio-inline
+                    input(type='radio', value='researcher', name='accountType')
+                    span Investigador
+                br
             a.btn.btn-secondary(href='/') Cancelar
             button.btn.btn-primary(id='signUpButton' type='submit') Registrarse

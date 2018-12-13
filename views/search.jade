@@ -1,0 +1,22 @@
+extends layout
+
+block content
+    .container
+        if users 
+            p.text-left Usuarios 
+                span.float-right Número de resultados: #{users.length}
+            hr
+            div.list-group
+                each user in users
+                    -var userUrl = '/perfil/'+'/usuario/'+user.id+'/'+user.names.replace(/\W/g, '')
+                    a.list-group-item.list-group-item-action(href='#{userUrl}') #{user.last_names +', ' + user.names}
+        if institutions 
+            p.text-left Instituciones 
+                span.float-right Número de resultados: #{institutions.length}
+            hr
+            div.list-group
+                each institution in institutions
+                    -var instUrl = '/perfil/'+'/institucion/'+institution.id+'/'+institution.name.replace(/\W/g, '')
+                    a.list-group-item.list-group-item-action(href='#{instUrl}') #{institution.name}
+        
+        

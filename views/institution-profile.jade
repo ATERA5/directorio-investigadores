@@ -1,0 +1,28 @@
+extends layout
+
+block content
+    .container
+        .row 
+            .col-sm-3
+                .text-center
+                    h3 #{institution.name}
+                .bg-light
+                    p Info
+                .card
+                    div.card-header sitio web
+                    div.card-body
+
+            .col-sm-9
+                ul.nav.nav-tabs
+                    li.nav-item
+                        a.nav-link.active(data-toggle='tab' href='#campus') Campus 
+                    li.nav-item
+                        a.nav-link(data-toggle='tab' href='#contactos') Contacto 
+
+                .tab-content    
+                    .tab-pane.fade.active.show(id='campus')
+                        h1 Campus
+                    .tab-pane.fade(id='contactos')
+                        h1 Contactos
+            
+                     

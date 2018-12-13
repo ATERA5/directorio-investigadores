@@ -1,0 +1,258 @@
+extends layout2
+
+block content
+    #preloader
+        .spinner
+
+    .wrapper.top_60.container
+        .row
+            .col-lg-3.col-md-4
+                .profile
+                    .profile-name
+                        span.name #{user.names}
+                figure.profile-image
+                    image(src='/images/profile.jpg' alt='')
+                ul.profile-information
+                    li
+                    li
+                        p
+                            span Nombre:
+                            b #{user.names}
+                    li
+                        p
+                            span Trabajo:
+                            b Profesor de Carrera
+                    li
+                        p
+                            span E-mail:
+                            b #{user.email}
+                .col-md-12.text-center
+                    button.site-btn.icon
+                        a(href='/salir', style='color: #000; margin-right:10px;') Cerrar Sesión
+            #ajax-tab-container.col-lg-9.col-md-8.tab-container
+                .row
+                    header.col-md-12
+                        nav
+                            .row
+                                .col-md-11.col-sm-11.col-xs-4
+                                    a.home-btn(href='/')
+                                        i.fa.fa-home(aria-hidden='true')
+                                    ul.tabs
+                                        li.tab
+                                            a(href='#home') MI PERFIL
+                                        li.tab
+                                            a(href='#resume') TRAYECTORIA
+                                        li.tab
+                                            a(href='#portfolio') PORTAFOLIO
+                                        li.tab
+                                            a(href='#contact') CONTACTO
+                                        form.form-inline.my-2.my-lg-0(action="#")
+                                            input.form-control.mr-sm-2(type="Search", aria-label="Search")
+                                            button.btn.btn-outline-success.my-2.my-sm-0(type='submit') Buscar
+                                .col-md-4.col-sm-4.col-xs-8.dynamic
+                                    .hamburger.pull-right.hidden-lg.hidden-md
+                                        i.fa.fa-bars(aria-hidden='true')
+
+                    .col-md-12
+                        #content.panel-container
+                            #home
+                                .row
+                                    section.about-me.line.col-md-12.padding_30.padbot_45
+                                        .section-title
+                                            span
+                                            h2 Acerca de mi
+                                        p.top_30
+                                            c earnest brother believe an exposed so. Me he believing daughters if forfeited at furniture. Age again and stuff downs spoke. Late hour new nay able fat each sell. Nor themselves age introduced frequently use unsatiable devonshire get. They why quit gay cold rose deal park. One same they four did ask busy. Reserved opinions fat him nay position. Breakfast as zealously incommode do agreeable furniture. One too nay led fanny allow plate.
+                                            br
+                                            br
+                                            c Quick six blind smart out burst. Perfectly on furniture dejection determine my depending an to. Add short water court fat. Her bachelor honoured perceive securing but desirous ham required. Questions deficient acuteness to engrossed as. Entirely led ten humoured greatest and yourself. Besides ye country on observe. She continue appetite endeavor she judgment interest the met. For she surrounded motionless fat resolution may.
+                                .row
+                                    section.services.line.gray.bg.col-md-12.padding_50.padbot_50
+                                        .section-title.bottom_45
+                                            span
+                                            h2 Tipos de trabajos
+                                        .row
+                                            .col-md-3.col-sm-6.col-xs-12
+                                                .service
+                                                    .icon
+                                                        i.flaticon-html
+                                                    span.title Web Development
+                                                    p.little-text I have been working on web design for 10 years.
+                                            .col-md-3.col-sm-6.col-xs-12
+                                                .service
+                                                    .icon
+                                                        i.flaticon-attach
+                                                    span.title Branding Identity
+                                                    p.little-text We will make you a brand that is catchy and leaves a trace.
+                                            .col-md-3.col-sm-6.col-xs-12
+                                                .service
+                                                    .icon
+                                                        i.flaticon-vector
+                                                    span.title Illustrator
+                                                    p.little-text We will make you a brand that is catchy and leaves a trace.
+                                            .col-md-3.col-sm-6.col-xs-12
+                                                .service
+                                                    .icon
+                                                        i.flaticon-attach
+                                                    span.title Fast Delivery
+                                                    p.little-text We will make you a brand that is catchy and leaves a trace.
+                                .row
+                                    section.design-skills.col-md-6.padding_60.padbot_50
+                                        .section-title.bottom_45
+                                            span
+                                            h2 Habilidades
+                                        ul.skill-list
+                                            li
+                                                h3 Photoshop
+                                                .progress
+                                                    .percentage(style='width:80%;')
+                                            li
+                                                h3 Sketch
+                                                .progress
+                                                    .percentage(style='width:60%;')
+                                            li
+                                                h3 Adobe Xd
+                                                .progress
+                                                    .percentage(style='width:30%;')
+                            #resume
+                                .row
+                                    section.education
+                                        .section-title.top_30
+                                            span
+                                            h2 Trayectoria
+                                        .row
+                                            .working-history.col-md-6.padding_15.padbot_30
+                                                ul.timeline.col-md-12.top_30
+                                                    li
+                                                        i.fa.fa-suitcase(aria-hidden='true')
+                                                    li
+                                                        h3.line-title CEO - Facebook Inc
+                                                        span 2010 - Present
+                                                        p.little-text Expenses as material breeding insisted building to in. Continual so distrusts pronounce by unwilling listening. Thing do taste on we manor.
+                                                    li
+                                                        h3.line-title Senior Designer - Google
+                                                        span 2008 - 2010
+                                                        p.little-text So insisted received is occasion advanced honoured. Among ready to which up. Attacks smiling and may out assured moments man nothing outward.
+                                                    li
+                                                        h3.line-title Junior Designer - Creative Shake
+                                                        span 2005 - 2008
+                                                        p.little-text Excited him now natural saw passage offices you minuter. At by asked being court hopes. Farther so friends am to detract.
+                                            .education-history.col-md-6.padding_15.padbot_30
+                                                ul.timeline.col-md-12.top_30
+                                                    li
+                                                        i.fa.fa-graduation-cap(aria-hidden='true')
+                                                    li
+                                                        h3.line-title Junior Designer - Creative Shake
+                                                        span 2005 - 2008
+                                                        p.little-text Excited him now natural saw passage offices you minuter. At by asked being court hopes. Farther so friends am to detract.
+                                                    li
+                                                        h3.line-title Junior Designer - Creative Shake
+                                                        span 2005 - 2008
+                                                        p.little-text Excited him now natural saw passage offices you minuter. At by asked being court hopes. Farther so friends am to detract.
+                                                    li
+                                                        h3.line-title Junior Designer - Creative Shake
+                                                        span 1999 - 2003
+                                                        p.little-text Excited him now natural saw passage offices you minuter. At by asked being court hopes. Farther so friends am to detract.
+                                .row
+                                    section.testimonials.bottom_30
+                                        .section-title.top_60.bottom_30
+                                            span
+                                            h2 Colaboradores
+                                        .owl-carousel.row(data-items='3', data-autoplay='3000', data-pagination='true')
+                                            .col-md-12.item
+                                                .comment
+                                                    .top-section
+                                                        figure
+                                                            img(src='/images/testimonial-1.jpg', alt='')
+                                                        .name-info
+                                                            span.name Jack Garratt
+                                                            span.job Freelancer
+                                                    hr
+                                                    p Great designer! he finished our work wonderfully and just in time. Thanks for everything
+                                            .col-md-12.item
+                                                .comment
+                                                    .top-section
+                                                        figure
+                                                            img(src='/images/testimonial-2.jpg', alt='')
+                                                        .name-info
+                                                            span.name Jack Garratt
+                                                            span.job Freelancer
+                                                    hr
+                                                    p Great designer! he finished our work wonderfully and just in time. Thanks for everything
+                                            .col-md-12.item
+                                                .comment
+                                                    .top-section
+                                                        figure
+                                                            img(src='/images/testimonial-3.jpg', alt='')
+                                                        .name-info
+                                                            span.name Jack Garratt
+                                                            span.job Freelancer
+                                                    hr
+                                                    p Great designer! he finished our work wonderfully and just in time. Thanks for everything
+                            #portfolio.row.bottom_45
+                                section.col-md-12
+                                    .col-md-12.content-header.bottom_15
+                                        .section-title.top_30.bottom_30
+                                            span
+                                            h2 Portafolio
+                                        #filters-container
+                                            .cbp-filter-item.cbp-filter-item-active(data-filter='*') Artículos
+                                    #grid-container.top_60
+                                        .cbp-item.webdesign(style='width: 279px; left: 0px; top: 0px;')
+                                            .cbp-item-wrapper
+                                                a.cbp-singlePage(href='/portfolio-detail/work-01.html')
+                                                    figure
+                                                        .icon
+                                                            i.fa.fa-clone(aria-hidden='true')
+                                                        figcaption
+                                                            span.title Babel Admin
+                                                            span.info An admin template design.
+                                        .cbp-item.webdesign(style='width: 279px; left: 299px; top: 0px;')
+                                            .cbp-item-wrapper
+                                                a.cbp-singlePage(href='/portfolio-detail/work-01.html')
+                                                    figure
+                                                        .icon
+                                                            i.fa.fa-clone(aria-hidden='true')
+                                                        figcaption
+                                                            span.title Babel Admin
+                                                            span.info An admin template design.
+                            #contact
+                                .row
+                                    section.contact-form.col-md-6.padding_30.padbot_45
+                                        .section-title.top_15.bottom_30
+                                            span
+                                            h2 Formulario de contacto
+                                        form.site-form
+                                            .row
+                                                .col-md-6
+                                                    input.site-input(placeholder='Nombre')
+                                                .col-md-6
+                                                    input.site-input(placeholder='Correo electrónico')
+                                                .col-md-12
+                                                    textarea.site-area(placeholder='Mensaje')
+                                                .col-md-12.top_15.bottom_30
+                                                    button.site-btn(type='submit') Enviar
+                                    section.contact-info.col-md-6.padding_30.padbot_45
+                                        .section-title.top_15.bottom_30
+                                            span
+                                            h2 Información de Contacto
+                                        ul
+                                            li
+                                                span Dirección:
+                                                b Cto. Exterior s/n, Ciudad Universitaria, 04510 Ciudad de México, CDMX
+                                            li
+                                                span Teléfono:
+                                                b +52 1234567890
+                                            li
+                                                span Trabajo:
+                                                b Profesor de Carrera
+                                            li
+                                                span Correo electrónico:
+                                                b hecav@gmail.com
+                            #map
+
+                footer
+                    .footer.col-md-12.top_30.bottom_30
+                        .name.col-md-5.hidden-md.hidden-sm.hidden-xs
+                            a#cond(href='#') Términos y Condiciones
+                        .copyright.col-lg-7.col-md-12 © 2018 ATERA
