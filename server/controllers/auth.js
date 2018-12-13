@@ -7,7 +7,7 @@ const sgMail = require('@sendgrid/mail');
 const fs = require('fs');
 const path = require('path');
 const randomstring = require("randomstring");
-const { validationResult } = require('express-validator/check');
+const { Error, validate } = require('./validationHelpers.js');
 
 module.exports = {
     logInIndex(req, res) {
@@ -17,13 +17,7 @@ module.exports = {
             res.render('login');
     },
     logIn(req, res) {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.render('login', {
-                errors: errors.array()
-            });
-        }
-        else {
+        validate(req, res, 'login').then(() => {
             User.findOne({
                 where: {
                     email: req.body.email,
@@ -32,12 +26,13 @@ module.exports = {
             .then((user) => {
                 if (user === null || !bcrypt.compareSync(req.body.password, user.password))
                     res.render('login', {
-                        error: 'El correo electrónico o la contraseña son incorrectos'
+                        errors: Error('body', 'password', req.body.password,
+                                'El correo electrónico o la contraseña son incorrectos'),
                     });
                 else if (user.approved == false) {
                     res.render('login', {
-                        error: 'La cuenta no ha sido confirmada, verifica tu bandeja de'
-                            + ' correo electrónico'
+                        errors: Error('', '', '', 'La cuenta no ha sido confirmada, '
+                                + 'verifica tu bandeja de correo electrónico' ),
                     });
                 }
                 else
@@ -45,7 +40,7 @@ module.exports = {
                         res.redirect('/');
                     });
             });
-        }
+        });
     },
     signUpIndex(req, res) {
         if (req.isAuthenticated())
@@ -54,13 +49,7 @@ module.exports = {
             res.render('signup');
     },
     signUp(req, res, next) {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.render('signup', {
-                errors: errors.array()
-            });
-        }
-        else {
+        validate(req, res, 'signup').then(() => {
             User.create({
                 names: req.body.names,
                 last_names: req.body.last_names,
@@ -105,14 +94,12 @@ module.exports = {
                 });
             })
             .catch(error => res.status(400).send(error));
-        }
+        });
     },
     logOut(req, res){
-
         req.logout();
         req.session.destroy();
         res.redirect('/');
-
     },
     confirmation(req, res) {
         User.findOne({
