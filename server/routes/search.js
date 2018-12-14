@@ -40,9 +40,21 @@ router.get('/busquedarapida/:arg',function(req,res,next){
     Promise.all([userPromise, institutionPromise]).then(function(values){
         var users = values[0];
         var institutions = values[1];
+        var usersLen = users.length;
+        var institutionsLen = institutions.length;
+        if (users.length > 10){
+            users = users.slice(0,10);
+        }
+        if (institutions.length > 10){
+            institutions = institutions.slice(0,10);
+        }
         res.render('search',{
             users: users,
-            institutions: institutions
+            institutions: institutions,
+            institutionsTotal: institutionsLen,
+            usersTotal:  usersLen,
+            query: req.params.arg,
+            quickSearch: true
         });
     })
     .catch(error => {
@@ -56,7 +68,12 @@ router.get('/busquedarapida/:arg',function(req,res,next){
     
 });
 
-router.get("/personas/:persona",function(req,res,next){
+router.get('/personas/:persona', function(req,res){
+    res.redirect(req.originalUrl + '/1')
+});
+
+
+router.get("/personas/:persona/:pagenum",function(req,res,next){
     var user = '%'+req.params.persona+'%';
     userModel.findAll({
         where: {   
@@ -70,8 +87,19 @@ router.get("/personas/:persona",function(req,res,next){
             ],
         },
     }).then(users => {
+        var userList = users;
+        if (userList.length > 10){
+            var userList = users.slice((parseInt(req.params.pagenum) - 1)*10);
+        }
+        var totalPages = Math.ceil(users.length/10);
+        if(userList.length > 10){
+            userList = userList.slice(0,10);
+        }
         res.render('search',{
-            users: users,
+            users: userList,
+            usersTotal: users.length,
+            totalPages: totalPages,
+            userQuery: req.params.persona
         });
     })
     .catch(error => {
@@ -85,8 +113,12 @@ router.get("/personas/:persona",function(req,res,next){
 
 });
 
-router.get("/instituciones/:institucion",function(req,res,next){
-    var institution = '%'+req.params.persona+'%';
+router.get('/institucion/:institucion', function(req,res){
+    res.redirect(req.originalUrl + '/1')
+});
+
+router.get("/institucion/:institucion/:pagenum",function(req,res,next){
+    var institution = '%'+req.params.institucion+'%';
     institutionModel.findAll({
         where: {   
             name: {
@@ -94,8 +126,19 @@ router.get("/instituciones/:institucion",function(req,res,next){
             }
         }
     }).then(institutions => {
+        var instList = institutions;
+        if (instList.length > 10){
+            var instList = institutions.slice((parseInt(req.params.pagenum) - 1)*10);
+        }
+        var totalPages = Math.ceil(institutions.length/10);
+        if(instList.length > 10){
+            instList = instList.slice(0,10);
+        }
         res.render('search',{
-            institutions: institutions
+            institutions: instList,
+            institutionsTotal: institutions.length,
+            totalPages: totalPages,
+            instQuery: req.params.institucion
         });
     })
     .catch(error => {
