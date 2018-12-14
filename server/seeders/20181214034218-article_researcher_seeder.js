@@ -4,9 +4,10 @@ faker.locale = "es_MX"
 module.exports = {
   up: (queryInterface, Sequelize) => {
     var article_researcher = [];
+    var j = 100;
     for (var i=0; i<100; i++){
       article_researcher[i]={
-        article_id: faker.random.number({min:1, max:100}),
+        article_id: j--,
         researcher_id: faker.random.number({min:1, max: 25}),
         createdAt: new Date(),
         updatedAt: new Date(),

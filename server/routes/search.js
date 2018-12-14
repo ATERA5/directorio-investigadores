@@ -4,6 +4,7 @@ var db =  require('../models/index');
 const Op = db.Sequelize.Op;
 var userModel = require('../models/user')(db.sequelize,db.Sequelize);
 var institutionModel = require('../models/institution')(db.sequelize,db.Sequelize);
+var articleModel = require('../models/article')(db.sequelize,db.Sequelize);
 
 router.all('',function(req,res,next){
     res.redirect('/busqueda/avanzada')
@@ -15,9 +16,9 @@ router.all('/busquedarapida',function(req,res,next){
 
 router.get('/busquedarapida/:arg',function(req,res,next){
     var searchArg = '%' + req.params.arg + '%';
-    
+
     var userPromise = userModel.findAll({
-        where: {   
+        where: {
             [Op.or]: [
                 {names: {
                     [Op.like]: searchArg
@@ -30,29 +31,49 @@ router.get('/busquedarapida/:arg',function(req,res,next){
     });
 
     var institutionPromise = institutionModel.findAll({
-        where: {   
+        where: {
             name: {
                 [Op.like]: searchArg
             }
         }
     });
 
-    Promise.all([userPromise, institutionPromise]).then(function(values){
+    var articlePromise = articleModel.findAll({
+        where: {
+            [Op.or]: [
+                {name: {
+                    [Op.like]: searchArg
+                }},
+                {area: {
+                    [Op.like]: searchArg
+                }},
+            ],
+        },
+    });
+    Promise.all([userPromise, institutionPromise,articlePromise]).then(function(values){
         var users = values[0];
         var institutions = values[1];
+        var articles = values[2];
         var usersLen = users.length;
         var institutionsLen = institutions.length;
+        var articlesLen = articles.length;
+
         if (users.length > 10){
             users = users.slice(0,10);
         }
         if (institutions.length > 10){
             institutions = institutions.slice(0,10);
         }
+        if(articles.length > 10){
+            articles = articles.slice(0,10);
+        }
         res.render('search',{
             users: users,
             institutions: institutions,
+            articles: articles,
             institutionsTotal: institutionsLen,
             usersTotal:  usersLen,
+            articlesTotal: articlesLen,
             query: req.params.arg,
             quickSearch: true
         });
@@ -60,12 +81,12 @@ router.get('/busquedarapida/:arg',function(req,res,next){
     .catch(error => {
         res.status(400);
         res.render('error', {
-        message: 'Ocurrió un error',
+        message: 'Ocurrió un error aaahhh',
         error: error
         });
     });
 
-    
+
 });
 
 router.get('/personas/:persona', function(req,res){
@@ -76,7 +97,7 @@ router.get('/personas/:persona', function(req,res){
 router.get("/personas/:persona/:pagenum",function(req,res,next){
     var user = '%'+req.params.persona+'%';
     userModel.findAll({
-        where: {   
+        where: {
             [Op.or]: [
                 {names: {
                     [Op.like]: user
@@ -120,7 +141,7 @@ router.get('/institucion/:institucion', function(req,res){
 router.get("/institucion/:institucion/:pagenum",function(req,res,next){
     var institution = '%'+req.params.institucion+'%';
     institutionModel.findAll({
-        where: {   
+        where: {
             name: {
                 [Op.like]: institution
             }
@@ -151,6 +172,52 @@ router.get("/institucion/:institucion/:pagenum",function(req,res,next){
 
 
 });
+
+router.get('/articulo/:articulo', function(req,res){
+    res.redirect(req.originalUrl + '/1')
+});
+
+router.get("/articulo/:articulo/:pagenum",function(req,res,next){
+    var article = '%'+req.params.articulo+'%';
+    articleModel.findAll({
+        where: {
+            [Op.or]: [
+                {name: {
+                    [Op.like]: article
+                }},
+                {area: {
+                    [Op.like]: article
+                }},
+            ],
+        },
+    }).then(articles => {
+        var articleList = articles;
+        if (articleList.length > 10){
+            var articleList = articles.slice((parseInt(req.params.pagenum) - 1)*10);
+        }
+        var totalPages = Math.ceil(articles.length/10);
+        if(articleList.length > 10){
+            articleList = articleList.slice(0,10);
+        }
+        res.render('search',{
+            articles: articleList,
+            articlesTotal: articles.length,
+            totalPages: totalPages,
+            artQuery: req.params.articulo
+        });
+    })
+    .catch(error => {
+        res.status(400);
+        res.render('error', {
+        message: 'Ocurrió un error',
+        error: error
+        });
+    });
+
+
+});
+
+
 
 router.get('/avanzada',function(req,res,next){
     res.render('advanced-search');

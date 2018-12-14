@@ -27,6 +27,7 @@ html
                     option(value='1') Todos
                     option(value='2') Personas
                     option(value='3') Institución
+                    option(value='4') Artículo
                 input.form-control(required='required' type="text" placeholder='Busqueda rápida' id='quickSearchInput' name='quickSearchInput')
                 .input-group-append
                   button.btn.btn-secondary(type='submit' id='quickSearchButton') Buscar
@@ -72,6 +73,8 @@ html
               location.href = "/busqueda/personas/"+search_title;
             if (type == 3)
               location.href = "/busqueda/institucion/"+search_title;
+            if(type == 4)
+              location.href= "/busqueda/articulo/"+search_title;
             event.preventDefault();
           });
          });
