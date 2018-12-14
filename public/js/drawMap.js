@@ -4,7 +4,7 @@ AmCharts.ready(function() {
     map = new AmCharts.AmMap();
     map.colorSteps = 10;
     $.ajax({
-        url: 'http://localhost:3000/estados',
+        url: '/estados',
         type: 'GET',
         success: function(result){
             makeMap(result);

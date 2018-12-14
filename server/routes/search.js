@@ -5,8 +5,8 @@ const Op = db.Sequelize.Op;
 var userModel = require('../models/user')(db.sequelize,db.Sequelize);
 var institutionModel = require('../models/institution')(db.sequelize,db.Sequelize);
 
-router.all('/',function(req,res,next){
-    res.redirect('/');
+router.all('',function(req,res,next){
+    res.redirect('/busqueda/avanzada')
 });
 
 router.all('/busquedarapida',function(req,res,next){
@@ -109,4 +109,7 @@ router.get("/instituciones/:institucion",function(req,res,next){
 
 });
 
+router.get('/avanzada',function(req,res,next){
+    res.render('advanced-search');
+});
 module.exports = router;
