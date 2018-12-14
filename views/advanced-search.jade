@@ -1,0 +1,39 @@
+extends layout
+
+block content
+    .container
+        form(action='/busqueda/avanzada' method='get' id='advancedSearchForm')
+            .form-group
+                label.col-form-label(for='user')  Usuario
+                input.form-control(type='text' id='userInput' name='user' placeholder='Usuario')
+            .form-group
+                label.col-form-label(for='institution') Institución
+                input.form-control(type='text' id='institutionInput' name='institution' placeholder='Institución')
+            .form-group
+                label.col-form-label(for='estate') Estado
+                input.form-control(type='text' id='estateInput' name='estate' placeholder='Estado')
+            button.btn.btn-primary(id='searchButton' type='submit') Buscar
+
+append scripts
+    append scripts
+    script(type='text/javascript').
+       $(document).ready(function(){
+         $("#advancedSearchForm").submit(function(event) {
+            var searchUser = encodeURIComponent($("#userInput").val().trim());
+            var searchEstate = encodeURIComponent($("#estateInput").val().trim());
+            var searchInst = encodeURIComponent($("#institutionInput").val().trim());
+            $("#quick_search_button").attr("disabled", true);
+            var url = '/busqueda/avanzada?'
+            if (searchUser){
+                url = url + '&usuario=' + searchUser;
+            }
+            if (searchEstate){
+                url = url + '&estado=' + searchEstate;
+            }
+            if (searchInst){
+                url = url + '&inst=' + searchInst;
+            }
+            location.href = url
+            event.preventDefault();
+          });
+         });

@@ -4,13 +4,7 @@ html
   block head
     title='Red de Investigadores'
     link(rel='stylesheet', href='/stylesheets/style.css')
-    link(rel='stylesheet', href='/stylesheets/animate.css')
-    link(rel='stylesheet', href='/stylesheets/flexslider.css')
-    link(rel='stylesheet', href='/stylesheets/icomoon.css')
-    link(rel='stylesheet', href='/stylesheets/style2.css')
     link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
-    link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Space+Mono')
-    link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Kaushan+Script')
     link(rel='icon', href='/images/icon.png')
   body
     block header
@@ -26,16 +20,16 @@ html
             li.nav-item
               a.nav-link(href='/')
                 strong Inicio
-            form.form-inline(role='search' id='quick_search_form')
+            form.form-inline(role='search' id='quickSearchForm')
               .input-group
                 .input-group-prepend
-                  select.form-control(id='quick_search_type')
+                  select.form-control(id='quickSearchType')
                     option(value='1') Todos
                     option(value='2') Personas
                     option(value='3') Institución
-                input.form-control(required='required' type="text" placeholder='Busqueda rápida' id='quick_search_input' name='quick_search_input')
+                input.form-control(required='required' type="text" placeholder='Busqueda rápida' id='quickSearchInput' name='quickSearchInput')
                 .input-group-append
-                  button.btn.btn-secondary(type='submit' id='quick_search_button') Buscar
+                  button.btn.btn-secondary(type='submit' id='quickSearchButton') Buscar
            ul.navbar-nav
             if !isAuthenticated
               li.nav-item-mx-1
@@ -62,19 +56,14 @@ html
       script(src='/jquery/jquery.min.js')
       script(src='/popper/popper.min.js')
       script(src='/bootstrap/js/bootstrap.min.js')
-      script(src='/js/jquery.min.js')
       script(src='/js/index.js')
-      script(src='/js/jquery.easing.1.3.js')
-      script(src='/js/jquery.waypoints.min.js')
-      script(src='/js/jquery.stellar.min.js')
-      script(src='/js/jquery.easypiechart.min.js')
       script(src='/js/main.js')
       script(type='text/javascript').
        $(document).ready(function(){
-         $("#quick_search_form").submit(function(event) {
-            var type = $("#quick_search_type").val();
-            var search_title = encodeURIComponent($("#quick_search_input").val());
-            $("#quick_search_button").attr("disabled", true);
+         $("#quickSearchForm").submit(function(event) {
+            var type = $("#quickSearchType").val();
+            var search_title = encodeURIComponent($("#quickSearchInput").val());
+            $("#quickSearchButton").attr("disabled", true);
             if (jQuery.trim(search_title) == "")
               return;
             if (type == 1)
@@ -85,4 +74,4 @@ html
               location.href = "/busqueda/institucion/"+search_title;
             event.preventDefault();
           });
-       });
+         });

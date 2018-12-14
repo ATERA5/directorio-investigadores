@@ -4,19 +4,42 @@ block content
     .container
         if users 
             p.text-left Usuarios 
-                span.float-right Número de resultados: #{users.length}
+                span.float-right Mostrando #{users.length} resultados de #{usersTotal}
             hr
-            div.list-group
+            if quickSearch
+                a(href='/busqueda/personas/#{query}') Mostrar más
+            div.list-group.p-5
                 each user in users
                     -var userUrl = '/perfil/'+'/usuario/'+user.id+'/'+user.names.replace(/\W/g, '')
                     a.list-group-item.list-group-item-action(href='#{userUrl}') #{user.last_names +', ' + user.names}
         if institutions 
             p.text-left Instituciones 
-                span.float-right Número de resultados: #{institutions.length}
+                span.float-right Mostrando #{institutions.length} resultados de #{institutionsTotal}
             hr
-            div.list-group
+            if quickSearch
+                a(href='/busqueda/institucion/#{query}') Mostrar más
+            div.list-group.p-5
                 each institution in institutions
                     -var instUrl = '/perfil/'+'/institucion/'+institution.id+'/'+institution.name.replace(/\W/g, '')
                     a.list-group-item.list-group-item-action(href='#{instUrl}') #{institution.name}
-        
-        
+    
+        if !quickSearch
+            if totalPages > 1
+                nav
+                    ul.pagination.justify-content-center
+                        li.page-item
+                            a.page-link(href='#')
+                                span &laquo;
+                                span.sr-only Previous
+                        -var i = 1
+                        while i <= totalPages
+                            li.page-item
+                                if userQuery
+                                    a.page-link(href='/busqueda/personas/' + userQuery + '/#{i}')= i++
+                                if instQuery
+                                    a.page-link(href='/busqueda/institucion/' + instQuery + '/#{i}')= i++
+                        li.page-item 
+                            a.page-link(href='#')
+                                span &raquo;
+                                span.sr-only Next
+            
