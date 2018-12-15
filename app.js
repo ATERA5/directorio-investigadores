@@ -18,6 +18,7 @@ var campusRouter = require('./server/routes/campus');
 var statesRouter = require('./server/routes/states');
 var countriesRouter = require('./server/routes/countries');
 var institutionsRouter = require('./server/routes/institutions');
+var articleRouter = require('./server/routes/articles');
 
 var app = express();
 
@@ -61,6 +62,7 @@ app.use('/campus', campusRouter);
 app.use('/estados', statesRouter);
 app.use('/paises', countriesRouter);
 app.use('/instituciones', institutionsRouter);
+app.use('/articulos', articleRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

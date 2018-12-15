@@ -2,8 +2,8 @@ extends layout
 
 block content
     .container
-        if users 
-            p.text-left Usuarios 
+        if users
+            p.text-left Usuarios
                 span.float-right Mostrando #{users.length} resultados de #{usersTotal}
             hr
             if quickSearch
@@ -12,8 +12,8 @@ block content
                 each user in users
                     -var userUrl = '/perfil/'+'/usuario/'+user.id+'/'+user.names.replace(/\W/g, '')
                     a.list-group-item.list-group-item-action(href='#{userUrl}') #{user.last_names +', ' + user.names}
-        if institutions 
-            p.text-left Instituciones 
+        if institutions
+            p.text-left Instituciones
                 span.float-right Mostrando #{institutions.length} resultados de #{institutionsTotal}
             hr
             if quickSearch
@@ -22,7 +22,38 @@ block content
                 each institution in institutions
                     -var instUrl = '/perfil/'+'/institucion/'+institution.id+'/'+institution.name.replace(/\W/g, '')
                     a.list-group-item.list-group-item-action(href='#{instUrl}') #{institution.name}
-    
+        if articles
+            p.text-left Articulos
+                span.float-right Mostrando #{articles.length} resultados de #{articlesTotal}
+            hr
+            if quickSearch
+              a(href='/busqueda/articulo/#{query}') Mostrar más
+            div.list-group.p-5
+               each article in articles
+                    -var articleUrl = '/perfil/'+'/articulo/'+article.id+'/'+article.name.replace(/\W/g, '')
+                    a.list-group-item.list-group-item-action(href='#{articleUrl}') #{article.name +', ' + article.area}
+        if campus
+            p.text-left Campus
+                span.float-right Mostrando #{campus.length} resultados de #{campusTotal}
+            hr
+            if quickSearch
+              a(href='/busqueda/campus/#{query}') Mostrar más
+            div.list-group.p-5
+              each c in campus
+                    -var campUrl = '/perfil/'+'/campus/'+c.id+'/'+c.name.replace(/\W/g, '')
+                    a.list-group-item.list-group-item-action(href='#{campUrl}') #{c.name}
+                    
+        if colleges
+             p.text-left Colegios
+                span.float-right Mostrando #{colleges.length} resultados de #{collegesTotal}
+             hr
+             if quickSearch
+                a(href='/busqueda/colegio/#{query}') Mostrar más
+             div.list-group.p-5
+                each college in colleges
+                    -var collUrl = '/perfil/'+'/colegio/'+college.id+'/'+college.name.replace(/\W/g, '')
+                    a.list-group-item.list-group-item-action(href='#{collUrl}') #{college.name}
+
         if !quickSearch
             if totalPages > 1
                 nav
@@ -38,8 +69,13 @@ block content
                                     a.page-link(href='/busqueda/personas/' + userQuery + '/#{i}')= i++
                                 if instQuery
                                     a.page-link(href='/busqueda/institucion/' + instQuery + '/#{i}')= i++
-                        li.page-item 
+                                if artQuery
+                                    a.page-link(href='/busqueda/articulo'+ artQuery + '/#{i}')= i++
+                                if campQuery
+                                    a.page-link(href='/busqueda/campus'+ campQuery + '/#{i}')= i++
+                                if collQuery
+                                    a.page-link(href='/busqueda/colegio'+ collQuery + '/#{i}')=i++
+                        li.page-item
                             a.page-link(href='#')
                                 span &raquo;
                                 span.sr-only Next
-            

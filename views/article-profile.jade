@@ -1,0 +1,38 @@
+extends layout 
+
+block content 
+    .container 
+        .row 
+          .col-sm-3
+            .text-center
+              h4 #{article.name}
+            .bg-light
+                .card
+                  div.card-header Información
+                  div.card-body
+                    ul Sobre el artículo
+                      li Nombre: #{article.name}
+                      li Área: #{article.area}
+                      li Fecha de publicación: #{article.date_of_publication}
+                  
+          .col-sm-9
+            ul.nav.nav-tabs
+                li.nav-item
+                    a.nav-link.active(data-toggle='tab' href='#mostrarPdf') Artículo 
+                li.nav-item
+                    a.nav-link(data-toggle='tab' href= '#autores') Autores
+            
+            .tab-content
+                .tab-pane.fade.active.show(id='mostrarPdf')
+                h3 Artículo
+                ul Información
+                  li Nombre: #{article.name}
+                  li Área: #{article.area}
+                  li Fecha de publicación: #{article.date_of_publication} 
+                  
+                        
+                .tab-pane.fade(id='autores')
+                    h3 Autores
+                    ul Información
+                        li Nombre : #{user.names}  #{user.last_names}
+                        li email : #{user.email}
