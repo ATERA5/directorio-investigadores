@@ -28,6 +28,8 @@ html
                     option(value='2') Personas
                     option(value='3') Institución
                     option(value='4') Artículo
+                    option(value='5') Campus
+                    option(value='6') Colegio
                 input.form-control(required='required' type="text" placeholder='Busqueda rápida' id='quickSearchInput' name='quickSearchInput')
                 .input-group-append
                   button.btn.btn-secondary(type='submit' id='quickSearchButton') Buscar
@@ -75,6 +77,8 @@ html
               location.href = "/busqueda/institucion/"+search_title;
             if(type == 4)
               location.href= "/busqueda/articulo/"+search_title;
+            if(type == 5)
+              location.href= "/busqueda/colegio/"+search_title;
             event.preventDefault();
           });
          });

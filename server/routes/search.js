@@ -5,6 +5,8 @@ const Op = db.Sequelize.Op;
 var userModel = require('../models/user')(db.sequelize,db.Sequelize);
 var institutionModel = require('../models/institution')(db.sequelize,db.Sequelize);
 var articleModel = require('../models/article')(db.sequelize,db.Sequelize);
+var campusModel = require('../models/campus')(db.sequelize,db.Sequelize);
+var collegeModel = require('../models/college')(db.sequelize,db.Sequelize);
 
 router.all('',function(req,res,next){
     res.redirect('/busqueda/avanzada')
@@ -50,13 +52,34 @@ router.get('/busquedarapida/:arg',function(req,res,next){
             ],
         },
     });
-    Promise.all([userPromise, institutionPromise,articlePromise]).then(function(values){
+
+    var campusPromise = campusModel.findAll({
+        where:{
+          name: {
+            [Op.like]:searchArg
+          }
+        }
+    });
+
+    var collegePromise = collegeModel.findAll({
+        where:{
+          name: {
+            [Op.like]:searchArg
+          }
+        }
+    });
+
+    Promise.all([userPromise, institutionPromise,articlePromise,campusPromise,collegePromise]).then(function(values){
         var users = values[0];
         var institutions = values[1];
         var articles = values[2];
+        var campus = values[3];
+        var colleges = values[4];
         var usersLen = users.length;
         var institutionsLen = institutions.length;
         var articlesLen = articles.length;
+        var campusLen = campus.length;
+        var collegesLen = colleges.length;
 
         if (users.length > 10){
             users = users.slice(0,10);
@@ -67,13 +90,24 @@ router.get('/busquedarapida/:arg',function(req,res,next){
         if(articles.length > 10){
             articles = articles.slice(0,10);
         }
+        if(campus.length > 10){
+            campus = campus.slice(0,10);
+        }
+        if(colleges.length > 10){
+            colleges = colleges.slice(0,10);
+        }
+
         res.render('search',{
             users: users,
             institutions: institutions,
             articles: articles,
+            campus: campus,
+            colleges: colleges,
             institutionsTotal: institutionsLen,
             usersTotal:  usersLen,
             articlesTotal: articlesLen,
+            campusTotal: campusLen,
+            collegesTotal: collegesLen,
             query: req.params.arg,
             quickSearch: true
         });
@@ -81,7 +115,7 @@ router.get('/busquedarapida/:arg',function(req,res,next){
     .catch(error => {
         res.status(400);
         res.render('error', {
-        message: 'Ocurrió un error aaahhh',
+        message: 'Ocurrió un error',
         error: error
         });
     });
@@ -218,6 +252,83 @@ router.get("/articulo/:articulo/:pagenum",function(req,res,next){
 });
 
 
+router.get('/campus/:campus', function(req,res){
+    res.redirect(req.originalUrl + '/1')
+});
+
+router.get("/campus/:campus/:pagenum",function(req,res,next){
+    var campus = '%'+req.params.campus+'%';
+    campusModel.findAll({
+        where: {
+            name: {
+                [Op.like]: campus
+            }
+        }
+    }).then(campus => {
+        var campList = campus;
+        if (campList.length > 10){
+            var campList = institutions.slice((parseInt(req.params.pagenum) - 1)*10);
+        }
+        var totalPages = Math.ceil(institutions.length/10);
+        if(instList.length > 10){
+            campList = instList.slice(0,10);
+        }
+        res.render('search',{
+            campus: campList,
+            campusTotal: campus.length,
+            totalPages: totalPages,
+            campQuery: req.params.campus
+        });
+    })
+    .catch(error => {
+        res.status(400);
+        res.render('error', {
+        message: 'Ocurrió un error',
+        error: error
+        });
+    });
+
+
+});
+
+router.get('/colegio/:colegio', function(req,res){
+    res.redirect(req.originalUrl + '/1')
+});
+
+router.get("/colegio/:colegio/:pagenum",function(req,res,next){
+    var college = '%'+req.params.colegio+'%';
+    collegeModel.findAll({
+        where: {
+            name: {
+                [Op.like]: college
+            }
+        }
+    }).then(colleges => {
+        var collList = colleges;
+        if (collList.length > 10){
+            var collList = colleges.slice((parseInt(req.params.pagenum) - 1)*10);
+        }
+        var totalPages = Math.ceil(colleges.length/10);
+        if(collList.length > 10){
+            collList = collList.slice(0,10);
+        }
+        res.render('search',{
+            colleges: collList,
+            collegesTotal: colleges.length,
+            totalPages: totalPages,
+            collQuery: req.params.college
+        });
+    })
+    .catch(error => {
+        res.status(400);
+        res.render('error', {
+        message: 'Ocurrió un error',
+        error: error
+        });
+    });
+
+
+});
 
 router.get('/avanzada',function(req,res,next){
     res.render('advanced-search');

@@ -32,6 +32,27 @@ block content
                each article in articles
                     -var articleUrl = '/perfil/'+'/articulo/'+article.id+'/'+article.name.replace(/\W/g, '')
                     a.list-group-item.list-group-item-action(href='#{articleUrl}') #{article.name +', ' + article.area}
+        if campus
+            p.text-left Campus
+                span.float-right Mostrando #{campus.length} resultados de #{campusTotal}
+            hr
+            if quickSearch
+              a(href='/busqueda/campus/#{query}') Mostrar más
+            div.list-group.p-5
+              each c in campus
+                    -var campUrl = '/perfil/'+'/campus/'+c.id+'/'+c.name.replace(/\W/g, '')
+                    a.list-group-item.list-group-item-action(href='#{campUrl}') #{c.name}
+                    
+        if colleges
+             p.text-left Colegios
+                span.float-right Mostrando #{colleges.length} resultados de #{collegesTotal}
+             hr
+             if quickSearch
+                a(href='/busqueda/colegio/#{query}') Mostrar más
+             div.list-group.p-5
+                each college in colleges
+                    -var collUrl = '/perfil/'+'/colegio/'+college.id+'/'+college.name.replace(/\W/g, '')
+                    a.list-group-item.list-group-item-action(href='#{collUrl}') #{college.name}
 
         if !quickSearch
             if totalPages > 1
@@ -50,6 +71,10 @@ block content
                                     a.page-link(href='/busqueda/institucion/' + instQuery + '/#{i}')= i++
                                 if artQuery
                                     a.page-link(href='/busqueda/articulo'+ artQuery + '/#{i}')= i++
+                                if campQuery
+                                    a.page-link(href='/busqueda/campus'+ campQuery + '/#{i}')= i++
+                                if collQuery
+                                    a.page-link(href='/busqueda/colegio'+ collQuery + '/#{i}')=i++
                         li.page-item
                             a.page-link(href='#')
                                 span &raquo;

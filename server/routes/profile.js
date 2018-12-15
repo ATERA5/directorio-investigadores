@@ -8,7 +8,8 @@ var researcherModel = require('../models/researcher')(db.sequelize,db.Sequelize)
 var institutionModel = require('../models/institution')(db.sequelize,db.Sequelize);
 var articleModel = require('../models/article')(db.sequelize, db.Sequelize);
 var articleResearcherModel = require('../models/articleresearcher')(db.sequelize, db.Sequelize);
-
+var campusModel = require('../models/campus')(db.sequelize,db.Sequelize);
+var collegeModel = require('../models/college')(db.sequelize, db.Sequelize);
 
 function userIsStudent(user) {
     return studentModel.findOne({
@@ -129,6 +130,30 @@ router.get('/articulo/:id/:user', function(req, res, next){
   })
 
 
+});
+
+router.get('/campus/:id/:user', function(req,res,next){
+    campusModel.findOne({
+        where: {
+            id: req.params.id
+        }
+    }).then(campus => {
+        res.render('campus-profile',{
+            campus: campus
+        });
+    })
+});
+
+router.get('/colegio/:id/:user', function(req,res,next){
+    collegeModel.findOne({
+        where: {
+            id: req.params.id
+        }
+    }).then(college => {
+        res.render('college-profile',{
+            college: college
+        });
+    })
 });
 
 module.exports = router;
